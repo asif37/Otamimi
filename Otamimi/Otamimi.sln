@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AAA2D78C-F268-41DC-BCA2-8EAF7EC4888A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7619E0C-9D25-4E93-915C-C517E4E526D9}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Otamimi", "src\Otamimi\Otamimi.xproj", "{A4AA68D1-D227-476B-AAA5-DC936DF2A362}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A4AA68D1-D227-476B-AAA5-DC936DF2A362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4AA68D1-D227-476B-AAA5-DC936DF2A362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4AA68D1-D227-476B-AAA5-DC936DF2A362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4AA68D1-D227-476B-AAA5-DC936DF2A362}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A4AA68D1-D227-476B-AAA5-DC936DF2A362} = {AAA2D78C-F268-41DC-BCA2-8EAF7EC4888A}
+	EndGlobalSection
+EndGlobal

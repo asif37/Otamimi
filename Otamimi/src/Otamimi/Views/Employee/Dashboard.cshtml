@@ -1,0 +1,196 @@
+﻿@model Otamimi.ViewModels.RequestViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="container">
+    <div class="jumbotron">
+        <h3>Employee Dashboard</h3>
+    </div>
+
+
+    <div>
+        <div class="alert alert-success">
+            <h2 class="text-primary">Refunds Requests</h2>
+        </div>
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+
+                    <th>Applicant</th>
+                    <th>Bank</th>
+                    <th>Amount</th>
+                    <th>Transection Date</th>
+                    <th>IBAN</th>
+                    <th>Account Holder Name</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                    @if (User.IsInRole("Role1") || User.IsInRole("Role3") || User.IsInRole("Role2"))
+                    {
+                        <th>Accept/Approve</th>
+                    }
+
+
+
+                </tr>
+            </thead>
+            <tbody style="height:300px;overflow:auto">
+                @foreach (var item in Model.refundList)
+                {
+                    <tr>
+                        <td>@item.Applicant.FullName</td>
+                        <td>@item.Bank.EnglishName</td>
+                        <td>@item.Amount</td>
+
+                        <td>@item.TransactionTime.ToString("MM/dd/yyyy")</td>
+                        <td>@item.IBAN</td>
+                        <td>@item.ToAccountHolderFullName</td>
+                        <td>@item.Country.Name</td>
+                        <th>@item.Status</th>
+                        <td>
+                            @if (User.IsInRole("Role1") || User.IsInRole("Role3"))
+                            {
+
+                                @if (item.Status == RequestStatus.Recieved)
+                                {
+                                    <button class="btn btn-success" onclick="AcceptRequest('@item.Id','Refunds')">Accept</button>
+                                }
+                                
+
+                            }
+                            @if (User.IsInRole("Role2") || User.IsInRole("Role3"))
+                            {
+                                @if (item.Status == RequestStatus.Accepted)
+                                {
+                                    <button class="btn btn-success" onclick="ApproveRequest('@item.Id','Refunds')">Approve</button>
+                                }
+                            }
+                            @if (item.Status == RequestStatus.Approved)
+                            {
+                                <center><span class="glyphicon glyphicon-check fa-2x" style="font-size: 20px;"></span></center>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div class="alert alert-danger">
+            <h2 class="text-primary">Misfunds Requests</h2>
+        </div>
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Bank</th>
+                    <th>Amount</th>
+                    
+                    <th>Transection Date</th>
+                    <th>Country</th>
+                    <th>Depositor Name</th>
+                    <th>From Student No</th>
+                    <th>Source Account</th>
+                    <th>To student No</th>
+                    <th>Status</th>
+                    @if (User.IsInRole("Role1") || User.IsInRole("Role3") || User.IsInRole("Role2"))
+                    {
+                        <th>Accept/Approve</th>
+                    }
+                </tr>
+            </thead>
+            <tbody style="height:300px;overflow:auto">
+                @foreach (var item in Model.MisfundsList)
+                {
+                    <tr>
+                        <td>@item.Applicant.FullName</td>
+                        <td>@item.Bank.EnglishName</td>
+                        <td>@item.Amount</td>
+                       
+                        <td>@item.TransactionTime.ToString("MM/dd/yyyy")</td>
+                        <td>@item.Country.Name</td>
+                        <td>@item.DepositorName</td>
+                        <td>@item.FromStudentNumber</td>
+                        <td>@item.SourceAccountNumber</td>
+                        <td>@item.ToStudentNumber</td>
+                        <td>@item.Status</td>
+                        <td>
+                            @if (User.IsInRole("Role1") || User.IsInRole("Role3"))
+                            {
+
+                                @if (item.Status == RequestStatus.Recieved)
+                                {
+                                    <button class="btn btn-success" onclick="AcceptRequest('@item.Id','Misfunds')">Accept</button>
+                                }
+
+
+                            }
+                            @if (User.IsInRole("Role2") || User.IsInRole("Role3"))
+                            {
+                                @if (item.Status == RequestStatus.Accepted)
+                                {
+                                    <button class="btn btn-success" onclick="ApproveRequest('@item.Id','Misfunds')">Approve</button>
+                                }
+                            }
+                            @if (item.Status == RequestStatus.Approved)
+                            {
+                                <center><span class="glyphicon glyphicon-check fa-2x" style="font-size: 20px;"></span></center>
+                            }
+                        </td>
+
+
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function AcceptRequest(Id,type)
+    {
+        var confrm = confirm("Do you want to change Status");
+        if (confrm) {
+            $.ajax({
+                url: "/Employee/AcceptRequest",
+                data: { "Id": Id, "Type": type },
+                success: function (result) {
+                    if (result) {
+                        alert("The Request Status Successfully changed")
+                        location.reload();
+                    }
+                    else {
+                        alert("There are some problems")
+                    }
+
+                }
+            });
+        }
+    }
+    function ApproveRequest(Id,type) {
+        var confrm = confirm("Do you want to change Status");
+        if (confrm) {
+            $.ajax({
+                url: "/Employee/ApproveRequest",
+                data: { "Id": Id, "Type": type },
+                success: function (result) {
+                    if (result) {
+                        alert("The Request Status Successfully changed")
+                        location.reload();
+                    }
+                    else {
+                        alert("There are some problems")
+                    }
+
+                }
+            });
+        }
+    }
+   
+    $(function () {
+
+
+    })
+</script>
