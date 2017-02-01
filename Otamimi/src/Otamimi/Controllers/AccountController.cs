@@ -12,6 +12,7 @@ using Otamimi.Models;
 using Otamimi.Models.AccountViewModels;
 using Otamimi.Services;
 using Otamimi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Otamimi.Controllers
 {
@@ -61,6 +62,7 @@ namespace Otamimi.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -110,6 +112,20 @@ namespace Otamimi.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
              {
+                if (model.Role=="Student")
+                {
+                    var checkuser = _context.Users.Include(e=>e.Roles).Where(s => s.IDNumber == model.Password).FirstOrDefault();
+                    if (checkuser!=null)
+                    {
+                        if (checkuser.Roles.Any(s=>s.RoleId=="4"))
+                        {
+                            ModelState.AddModelError(string.Empty, "ID Number already used agianst Applicant User.Applicant can not Student");
+                            ViewBag.RoleList = _context.Roles.ToList();
+                            return View(model);
+                        }
+                    }
+                }
+                
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email,MobileNumber=model.MobileNumber,FullName=model.FullName,IDNumber=model.Password };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
